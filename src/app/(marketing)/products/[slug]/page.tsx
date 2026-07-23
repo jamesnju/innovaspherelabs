@@ -2,16 +2,26 @@
 
 import { ProductDetails } from '@/src/app/components/common/marketing/Products/ProductDetails';
 import { RelatedProducts } from '@/src/app/components/common/marketing/Products/RelatedProducts';
-import { getProductBySlug, getRelatedProducts } from '@/src/app/services/products';
+import { getProductBySlug, getRelatedProducts, getAllProducts } from '@/src/app/services/products';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
 interface Props {
-  params: { slug: string };
+  params: Promise<{ slug: string }>; // Changed to Promise
+}
+
+export async function generateStaticParams() {
+  const products = await getAllProducts();
+  return products.map((product) => ({
+    slug: product.slug,
+  }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const product = await getProductBySlug(params.slug);
+  // Await the params Promise
+  const { slug } = await params;
+  
+  const product = await getProductBySlug(slug);
   
   if (!product) {
     return {
@@ -19,7 +29,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
-  // Handle undefined image
   const images = product.image ? [product.image] : [];
 
   return {
@@ -34,7 +43,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function ProductPage({ params }: Props) {
-  const product = await getProductBySlug(params.slug);
+  // Await the params Promise
+  const { slug } = await params;
+  
+  const product = await getProductBySlug(slug);
   
   if (!product) {
     notFound();

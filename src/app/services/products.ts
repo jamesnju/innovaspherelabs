@@ -1,4 +1,3 @@
-// src/lib/services/products.ts
 import { cache } from 'react';
 
 export interface Product {
@@ -58,7 +57,6 @@ const mockProducts: Product[] = [
 ];
 
 export const getAllProducts = cache(async (): Promise<Product[]> => {
-  // In production, fetch from database
   return mockProducts;
 });
 

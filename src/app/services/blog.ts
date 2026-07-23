@@ -80,7 +80,7 @@ const mockPosts: BlogPost[] = [
     excerpt: 'Understand the benefits of offline POS systems for retail businesses.',
         content: `<h2>Introduction</h2><p>Lorem ipsum dolor sit amet...</p>`, // Add content
 
-    coverImage: '/images/blog/offline-pos.jpg',
+    coverImage: '/images/blog/offline-pos.jpeg',
     slug: 'offline-pos-game-changer-retail',
     publishedAt: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
     readTime: 4,

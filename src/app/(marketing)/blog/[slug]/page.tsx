@@ -1,15 +1,18 @@
 // src/app/(marketing)/blog/[slug]/page.tsx
+
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { BlogPost } from '@/src/app/components/common/marketing/Blog/BlogPost';
 import { getBlogPostBySlug } from '@/src/app/services/blog';
 
 interface Props {
-  params: { slug: string };
+  params: Promise<{ slug: string }>; // Changed to Promise
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const post = await getBlogPostBySlug(params.slug);
+  // Await the params Promise
+  const { slug } = await params;
+  const post = await getBlogPostBySlug(slug);
   
   if (!post) {
     return {
@@ -31,7 +34,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function BlogPostPage({ params }: Props) {
-  const post = await getBlogPostBySlug(params.slug);
+  // Await the params Promise
+  const { slug } = await params;
+  const post = await getBlogPostBySlug(slug);
   
   if (!post) {
     notFound();

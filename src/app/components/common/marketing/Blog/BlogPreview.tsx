@@ -105,9 +105,14 @@ export function BlogPreview({ posts = defaultPosts }: BlogPreviewProps) {
               <Link href={`/blog/${post.slug}`}>
                 <div className="bg-white dark:bg-gray-950 rounded-2xl overflow-hidden shadow-soft border border-gray-200 dark:border-gray-800 transition-all duration-300 hover:shadow-hard hover:-translate-y-1">
                   <div className="relative aspect-video overflow-hidden bg-gray-200 dark:bg-gray-800">
-                    <div className="w-full h-full bg-gradient-to-br from-secondary-500/20 to-accent-500/20 flex items-center justify-center">
-                      <span className="text-4xl">📝</span>
-                    </div>
+                    {/* Use the actual coverImage */}
+                    <Image
+                      src={post.coverImage}
+                      alt={post.title}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-300"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    />
                     <Badge className="absolute top-3 left-3">
                       {post.category}
                     </Badge>

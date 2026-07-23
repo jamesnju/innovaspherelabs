@@ -49,6 +49,36 @@ export function HeroSection() {
               </Button>
             </div>
             <div className="flex items-center gap-6 mt-8">
+  <div className="flex -space-x-2">
+    {[
+      'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face',
+      'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop&crop=face',
+      'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face',
+      'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face',
+    ].map((imageUrl, i) => (
+      <div
+        key={i}
+        className="w-8 h-8 rounded-full border-2 border-white dark:border-gray-900 overflow-hidden"
+      >
+        <img
+          src={imageUrl}
+          alt={`Business owner ${i + 1}`}
+          className="w-full h-full object-cover"
+        />
+      </div>
+    ))}
+  </div>
+  <div>
+    <p className="font-medium text-gray-900 dark:text-white">
+      Trusted by 10,000+ businesses
+    </p>
+    <div className="flex items-center gap-1 text-sm text-gray-500 dark:text-gray-400">
+      <CheckCircle className="h-4 w-4 text-green-500" />
+      <span>4.9/5 average rating</span>
+    </div>
+  </div>
+</div>
+            {/* <div className="flex items-center gap-6 mt-8">
               <div className="flex -space-x-2">
                 {[1, 2, 3, 4].map((i) => (
                   <div
@@ -66,7 +96,7 @@ export function HeroSection() {
                   <span>4.9/5 average rating</span>
                 </div>
               </div>
-            </div>
+            </div> */}
           </motion.div>
 
           <motion.div
