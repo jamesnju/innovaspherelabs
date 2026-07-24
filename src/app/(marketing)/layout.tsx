@@ -7,7 +7,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return(
   <>
     <MarketingLayout>{children}</MarketingLayout>;
-    <WhatsAppButton phoneNumber="0100998626" />
+    <WhatsAppButton phoneNumber="254100992686" />
 
   </>);
 }
