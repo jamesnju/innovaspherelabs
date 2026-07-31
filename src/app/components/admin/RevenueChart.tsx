@@ -1,7 +1,5 @@
-// src/components/admin/RevenueChart.tsx
 'use client';
 
-import { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import {
   Chart as ChartJS,

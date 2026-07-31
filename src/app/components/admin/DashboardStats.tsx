@@ -1,4 +1,3 @@
-// src/components/admin/DashboardStats.tsx
 'use client';
 
 import { motion } from 'framer-motion';

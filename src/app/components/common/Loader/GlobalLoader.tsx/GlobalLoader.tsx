@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 export function GlobalLoader() {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
+  //const searchParams = useSearchParams();
   const [isLoading, setIsLoading] = useState(false);
   const [progress, setProgress] = useState(0);
 
@@ -60,7 +60,7 @@ export function GlobalLoader() {
       clearInterval(intervalId);
       clearTimeout(timeoutId);
     };
-  }, [pathname, searchParams]);
+  }, [pathname]);
 
   return (
     <AnimatePresence>

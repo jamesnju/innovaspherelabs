@@ -1,65 +1,79 @@
 // src/contexts/AuthContext.tsx
 'use client';
 
-import { createContext, useContext, useEffect, useState } from 'react';
-import { useSession } from 'next-auth/react';
+import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
+import { getClientAuthToken, getClientUser, setClientAuth, removeClientAuth } from '../app/services/auth';
+import { User } from '../types/auth.types';
 
-// Define the User type with role
-interface User {
-  id: string;
-  name?: string | null;
-  email?: string | null;
-  image?: string | null;
-  role: 'super_admin' | 'business_owner' | 'manager' | 'employee';
-  companyId?: string;
-  companyName?: string;
-  emailVerified?: Date;
-}
+// Import User type from auth service
 
 interface AuthContextType {
   user: User | null;
-  loading: boolean;
+  token: string | null;
+  isLoading: boolean;
   isAuthenticated: boolean;
   isAdmin: boolean;
-  hasPermission: (requiredRole: string | string[]) => boolean;
+  login: (token: string, user: User) => void;
+  logout: () => void;
+  updateUser: (user: User) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const { data: session, status } = useSession();
+export function AuthProvider({ children }: { children: ReactNode }) {
+  const [user, setUserState] = useState<User | null>(null);
+  const [token, setTokenState] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setLoading(status === 'loading');
-  }, [status]);
+    // Check for existing session on mount
+    const storedToken = getClientAuthToken();
+    const storedUser = getClientUser();
 
-  // Cast session.user to our User type with role
-  const user = session?.user as User | null || null;
-  const isAuthenticated = !!session?.user;
-  const isAdmin = user?.role === 'super_admin';
-
-  const hasPermission = (requiredRole: string | string[]) => {
-    if (!user) return false;
-    if (isAdmin) return true;
-    
-    if (Array.isArray(requiredRole)) {
-      return requiredRole.includes(user.role);
+    if (storedToken && storedUser) {
+      setTokenState(storedToken);
+      setUserState(storedUser);
     }
     
-    return user.role === requiredRole;
+    setIsLoading(false);
+  }, []);
+
+  const login = (newToken: string, newUser: User) => {
+    setClientAuth(newToken, newUser);
+    setTokenState(newToken);
+    setUserState(newUser);
   };
+
+  const updateUser = (updatedUser: User) => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('user', JSON.stringify(updatedUser));
+    }
+    setUserState(updatedUser);
+  };
+
+  const logout = () => {
+    removeClientAuth();
+    setTokenState(null);
+    setUserState(null);
+    router.push('/login');
+  };
+
+  const isAuthenticated = !!token && !!user;
+  const isAdmin = user?.role === 'SUPER_ADMIN';
 
   return (
     <AuthContext.Provider
       value={{
         user,
-        loading,
+        token,
+        isLoading,
         isAuthenticated,
         isAdmin,
-        hasPermission,
+        login,
+        logout,
+        updateUser,
       }}
     >
       {children}
@@ -73,36 +87,4 @@ export function useAuth() {
     throw new Error('useAuth must be used within an AuthProvider');
   }
   return context;
-}
-
-// Protected Route Hook
-export function useRequireAuth(redirectTo = '/login') {
-  const { isAuthenticated, loading } = useAuth();
-  const router = useRouter();
-
-  useEffect(() => {
-    if (!loading && !isAuthenticated) {
-      router.push(redirectTo);
-    }
-  }, [isAuthenticated, loading, router, redirectTo]);
-
-  return { isAuthenticated, loading };
-}
-
-// Admin Route Hook
-export function useRequireAdmin(redirectTo = '/dashboard') {
-  const { isAdmin, loading, isAuthenticated } = useAuth();
-  const router = useRouter();
-
-  useEffect(() => {
-    if (!loading) {
-      if (!isAuthenticated) {
-        router.push('/login');
-      } else if (!isAdmin) {
-        router.push(redirectTo);
-      }
-    }
-  }, [isAdmin, loading, isAuthenticated, router, redirectTo]);
-
-  return { isAdmin, loading, isAuthenticated };
 }

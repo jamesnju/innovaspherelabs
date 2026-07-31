@@ -1,4 +1,4 @@
-export const dynamic = 'force-dynamic';
+// src/app/layout.tsx
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
@@ -69,7 +69,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${inter.variable} scroll-smooth`} suppressHydrationWarning>
+    <html lang="en" className={`${inter.variable} scroll-smooth`} suppressHydrationWarning data-scroll-behavior="smooth">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
@@ -87,7 +87,7 @@ export default function RootLayout({
   );
 }
 
-// // src/app/layout.tsx
+// export const dynamic = 'force-dynamic';
 // import type { Metadata } from 'next';
 // import { Inter } from 'next/font/google';
 // import './globals.css';
@@ -150,9 +150,6 @@ export default function RootLayout({
 //       'max-snippet': -1,
 //     },
 //   },
-//   verification: {
-//     google: process.env.NEXT_PUBLIC_GOOGLE_VERIFICATION,
-//   },
 // };
 
 // export default function RootLayout({
@@ -161,7 +158,7 @@ export default function RootLayout({
 //   children: React.ReactNode;
 // }) {
 //   return (
-//     <html lang="en" className={`${inter.variable} scroll-smooth`}>
+//     <html lang="en" className={`${inter.variable} scroll-smooth`} suppressHydrationWarning>
 //       <head>
 //         <link rel="preconnect" href="https://fonts.googleapis.com" />
 //         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
@@ -169,7 +166,7 @@ export default function RootLayout({
 //         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 //         <link rel="manifest" href="/manifest.json" />
 //       </head>
-//       <body className="min-h-screen bg-background font-sans antialiased">
+//       <body className="min-h-screen bg-background font-sans antialiased" suppressHydrationWarning>
 //         <GlobalLoader />
 //         <Providers>
 //           {children}
@@ -178,3 +175,7 @@ export default function RootLayout({
 //     </html>
 //   );
 // }
+
+// //     </html>
+// //   );
+// // }

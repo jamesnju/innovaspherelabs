@@ -1,10 +1,11 @@
+// src/app/(admin)/admin/page.tsx
 export const dynamic = 'force-dynamic';
 import { Metadata } from 'next';
 import { AdminDashboardStats } from '../../components/admin/DashboardStats';
 import { RecentCustomers } from '../../components/admin/RecentCustomers';
 import { RevenueChart } from '../../components/admin/RevenueChart';
 import { SystemStatus } from '../../components/admin/SystemStatus';
-import { getAdminStats } from '../../services/admin';
+import { getAdminStats } from '../../services/admin.server';
 
 export const metadata: Metadata = {
   title: 'Admin Dashboard - Platform Management',

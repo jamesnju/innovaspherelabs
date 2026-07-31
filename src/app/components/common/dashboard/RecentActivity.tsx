@@ -1,4 +1,4 @@
-// src/components/dashboard/RecentActivity.tsx
+// src/components/common/dashboard/RecentActivity.tsx
 'use client';
 
 import { motion } from 'framer-motion';
@@ -7,12 +7,16 @@ import {
   User, 
   Package, 
   CreditCard,
-  Clock
+  Clock,
+  FileText,
+  LogIn
 } from 'lucide-react';
 
-interface Activity {
+export type ActivityType = 'sale' | 'user' | 'product' | 'payment' | 'invoice' | 'login';
+
+export interface Activity {
   id: string;
-  type: 'sale' | 'user' | 'product' | 'payment';
+  type: ActivityType;
   title: string;
   description: string;
   timestamp: string;
@@ -28,7 +32,7 @@ interface RecentActivityProps {
 }
 
 export function RecentActivity({ activities }: RecentActivityProps) {
-  const getIcon = (type: Activity['type']) => {
+  const getIcon = (type: ActivityType) => {
     switch (type) {
       case 'sale':
         return <ShoppingBag className="h-4 w-4" />;
@@ -38,12 +42,16 @@ export function RecentActivity({ activities }: RecentActivityProps) {
         return <Package className="h-4 w-4" />;
       case 'payment':
         return <CreditCard className="h-4 w-4" />;
+      case 'invoice':
+        return <FileText className="h-4 w-4" />;
+      case 'login':
+        return <LogIn className="h-4 w-4" />;
       default:
         return <Clock className="h-4 w-4" />;
     }
   };
 
-  const getColor = (type: Activity['type']) => {
+  const getColor = (type: ActivityType) => {
     switch (type) {
       case 'sale':
         return 'bg-green-100 text-green-600 dark:bg-green-900/20 dark:text-green-400';
@@ -53,10 +61,38 @@ export function RecentActivity({ activities }: RecentActivityProps) {
         return 'bg-purple-100 text-purple-600 dark:bg-purple-900/20 dark:text-purple-400';
       case 'payment':
         return 'bg-yellow-100 text-yellow-600 dark:bg-yellow-900/20 dark:text-yellow-400';
+      case 'invoice':
+        return 'bg-indigo-100 text-indigo-600 dark:bg-indigo-900/20 dark:text-indigo-400';
+      case 'login':
+        return 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400';
       default:
         return 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400';
     }
   };
+
+  // If no activities, show empty state
+  if (!activities || activities.length === 0) {
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="bg-white dark:bg-gray-900 rounded-2xl shadow-soft border border-gray-200 dark:border-gray-800"
+      >
+        <div className="p-6 border-b border-gray-200 dark:border-gray-800">
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+            Recent Activity
+          </h3>
+          <p className="text-sm text-gray-500 dark:text-gray-400">
+            Latest actions from your business
+          </p>
+        </div>
+        <div className="p-8 text-center">
+          <Clock className="h-12 w-12 text-gray-300 dark:text-gray-600 mx-auto mb-3" />
+          <p className="text-gray-500 dark:text-gray-400">No recent activity</p>
+        </div>
+      </motion.div>
+    );
+  }
 
   return (
     <motion.div
@@ -73,7 +109,7 @@ export function RecentActivity({ activities }: RecentActivityProps) {
         </p>
       </div>
 
-      <div className="divide-y divide-gray-200 dark:divide-gray-800">
+      <div className="divide-y divide-gray-200 dark:divide-gray-800 max-h-[400px] overflow-y-auto">
         {activities.map((activity, index) => (
           <motion.div
             key={activity.id}
@@ -93,14 +129,17 @@ export function RecentActivity({ activities }: RecentActivityProps) {
                 <p className="text-sm text-gray-500 dark:text-gray-400">
                   {activity.description}
                 </p>
-                {activity.amount && (
+                {activity.amount && activity.amount > 0 && (
                   <p className="text-sm font-semibold text-secondary-600 dark:text-secondary-400 mt-1">
                     ${activity.amount.toFixed(2)}
                   </p>
                 )}
               </div>
-              <div className="text-right text-sm text-gray-500 dark:text-gray-400">
-                {new Date(activity.timestamp).toLocaleTimeString()}
+              <div className="text-right text-sm text-gray-500 dark:text-gray-400 flex-shrink-0">
+                {new Date(activity.timestamp).toLocaleTimeString([], { 
+                  hour: '2-digit', 
+                  minute: '2-digit' 
+                })}
               </div>
             </div>
           </motion.div>

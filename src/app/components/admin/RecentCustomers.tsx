@@ -1,4 +1,3 @@
-// src/components/admin/RecentCustomers.tsx
 'use client';
 
 import { motion } from 'framer-motion';
@@ -6,13 +5,42 @@ import Link from 'next/link';
 import { ArrowRight, Calendar } from 'lucide-react';
 import { Badge } from '../ui/Badge';
 import { Avatar } from '../ui/Avatar';
-import { RecentCustomer } from '../../services/admin';
+
+interface RecentCustomer {
+  id: string;
+  name: string;
+  email: string;
+  company: string;
+  plan: string;
+  avatar?: string;
+  joinedAt: string;
+}
 
 interface RecentCustomersProps {
   customers: RecentCustomer[];
 }
 
 export function RecentCustomers({ customers }: RecentCustomersProps) {
+  if (!customers || customers.length === 0) {
+    return (
+      <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-soft border border-gray-200 dark:border-gray-800 p-6">
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+              Recent Customers
+            </h3>
+            <p className="text-sm text-gray-500 dark:text-gray-400">
+              New businesses that joined recently
+            </p>
+          </div>
+        </div>
+        <p className="text-center text-gray-500 dark:text-gray-400 py-8">
+          No recent customers found.
+        </p>
+      </div>
+    );
+  }
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -29,7 +57,7 @@ export function RecentCustomers({ customers }: RecentCustomersProps) {
           </p>
         </div>
         <Link
-          href="/admin/customers"
+          href="/admin/clients"
           className="text-sm text-secondary-500 hover:text-secondary-600 font-medium flex items-center gap-1"
         >
           View all
@@ -69,7 +97,7 @@ export function RecentCustomers({ customers }: RecentCustomersProps) {
                 </div>
               </div>
               <div className="flex items-center gap-3">
-                <Badge variant={customer.plan === 'premium' ? 'success' : 'default'}>
+                <Badge variant={customer.plan === 'PREMIUM' ? 'success' : customer.plan === 'BASIC' ? 'warning' : 'default'}>
                   {customer.plan}
                 </Badge>
                 <div className="flex items-center gap-1 text-sm text-gray-500 dark:text-gray-400">

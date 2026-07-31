@@ -1,4 +1,3 @@
-// src/components/admin/SystemStatus.tsx
 'use client';
 
 import { motion } from 'framer-motion';
@@ -9,15 +8,15 @@ import {
   Clock,
   Database,
   Server,
-  Cloud,
-  Shield
+  Shield,
+  CreditCard
 } from 'lucide-react';
 
 interface Service {
   name: string;
   status: 'operational' | 'degraded' | 'outage';
   uptime: string;
-  icon: React.ReactNode;
+  icon: string;
 }
 
 interface SystemStatusProps {
@@ -27,6 +26,13 @@ interface SystemStatusProps {
     lastUpdated: string;
   };
 }
+
+const iconMap: Record<string, React.ReactNode> = {
+  Server: <Server className="h-5 w-5" />,
+  Database: <Database className="h-5 w-5" />,
+  Shield: <Shield className="h-5 w-5" />,
+  CreditCard: <CreditCard className="h-5 w-5" />,
+};
 
 export function SystemStatus({ status }: SystemStatusProps) {
   const statusColors = {
@@ -84,7 +90,7 @@ export function SystemStatus({ status }: SystemStatusProps) {
             >
               <div className="flex items-center gap-3">
                 <div className="text-gray-500 dark:text-gray-400">
-                  {service.icon}
+                  {iconMap[service.icon] || <Server className="h-5 w-5" />}
                 </div>
                 <div>
                   <p className="font-medium text-gray-900 dark:text-white">
