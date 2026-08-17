@@ -37,7 +37,7 @@ export const metadata: Metadata = {
     siteName: 'Multi-SaaS Platform',
     images: [
       {
-        url: '/og-image.jpg',
+        url: '/apple-touch-icon.png',
         width: 1200,
         height: 630,
         alt: 'Multi-SaaS Platform',
@@ -48,7 +48,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Multi-SaaS Platform - Business Management Solutions',
     description: 'All-in-one business management platform with POS, E-commerce, and Inventory solutions.',
-    images: ['/og-image.jpg'],
+    images: ['/apple-touch-icon.png'],
   },
   robots: {
     index: true,
