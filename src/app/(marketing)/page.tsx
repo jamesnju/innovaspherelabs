@@ -10,6 +10,7 @@ import { HeroSection } from '../components/common/marketing/Hero';
 import { ProductShowcase } from '../components/common/marketing/Products/ProductShowcase';
 import { Testimonials } from '../components/common/marketing/Testimonials';
 import { Stats } from '../components/common/marketing/Stats';
+import { Team } from '../components/common/marketing/MeetTheTeam';
 
 
 
@@ -30,11 +31,16 @@ export default async function HomePage() {
     <>
       <HeroSection />
       <Features />
-      <ProductShowcase products={featuredProducts} />
-      <Stats stats={stats} />
-      <Testimonials testimonials={testimonials} />
+      {/* <ProductShowcase products={featuredProducts} /> */}
+      {/* <Stats stats={stats} /> */}
+            <Stats />
+
+      <Testimonials />
+            {/* <Testimonials testimonials={testimonials} /> */}
+      <Team />
+
       <BlogPreview />
       <CTASection />
     </>
-  );
+  )
 }

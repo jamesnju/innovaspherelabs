@@ -6,7 +6,7 @@ import { WhatsAppButton } from "../components/common/WhatsAppButton";
 export default function Layout({ children }: { children: React.ReactNode }) {
   return(
   <>
-    <MarketingLayout>{children}</MarketingLayout>;
+    <MarketingLayout>{children}</MarketingLayout>
     <WhatsAppButton phoneNumber="254100992686" />
 
   </>);
