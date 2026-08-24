@@ -39,7 +39,7 @@ export default async function HomePage() {
             {/* <Testimonials testimonials={testimonials} /> */}
       <Team />
 
-      <BlogPreview />
+      {/* <BlogPreview /> */}
       <CTASection />
     </>
   )
